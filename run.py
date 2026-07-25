@@ -195,12 +195,12 @@ class Runner(object):
         # =================================
         # import and create different models given model config
         # =================================
-        from models.simvp import get_model
+        from models.phydnet import get_model
         kwargs = {
             "in_shape": (self.args.img_channel, self.args.img_size, self.args.img_size),
             "T_in": self.args.frames_in,
             "T_out": self.args.frames_out,
-            # "device": self.device
+            "device": self.device
         }
         model = get_model(**kwargs)
         
@@ -224,7 +224,20 @@ class Runner(object):
         self.ema = EMA(self.model, beta=self.args.ema_rate, update_every=20).to(self.device)        
         
         if self.is_main:
-            total = sum([param.nelement() for param in self.model.parameters()])
+            if self.args.eval:
+                excluded_modules = (
+                    "encoder_radar",
+                    "decoder_radar",
+                    "encoder_satellite",
+                    "decoder_satellite",
+                )
+                total = sum(
+                    param.numel()
+                    for name, param in self.model.named_parameters()
+                    if not name.startswith(excluded_modules)
+                )
+            else:
+                total = sum(param.numel() for param in self.model.parameters())
             print_log("Main Model Parameters: %.2fM" % (total/1e6), self.is_main)
 
 
