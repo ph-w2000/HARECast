@@ -17,7 +17,7 @@ conda activate HARECast
 pip install -r requirement.txt
 ```
 ### Resource
-Pretrained HARECast: [Google Drive](https://drive.google.com/file/d/1gm1gHCSC0qgH9oqKcF-W4M3YZ13fJRJt/view?usp=share_link) </br>
+Pretrained HARECast: [Google Drive](https://drive.google.com/file/d/1-bf_HYjcPUhJEcdO59VV2Ku2S8ELTYPm/view?usp=sharing) </br>
 
 ### Evaluation
 ```shell
